@@ -7,7 +7,7 @@
         "cmd /c xcopy pages\\* build\\CommitReact\\pages /s /i /y",
         "cmd /c copy /Y LICENSE.txt build\\CommitReact",
         "cmd /c copy /Y CommitReact.php build\\CommitReact",
-        "Compress-Archive -Path build\\CommitReact -CompressionLevel Optimal -DestinationPath build\\CommitReact.zip",
+        "Compress-Archive -Path build\\CommitReact -Update -CompressionLevel Optimal -DestinationPath build\\CommitReact.zip",
         "cmd /c rmdir /S /Q build\\CommitReact"
     ],
     "changelogFile":     "CHANGELOG.md",
