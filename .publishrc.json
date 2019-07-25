@@ -3,8 +3,12 @@
     "branch":            "master",
     "bugs":              "",
     "buildCommand": [
-        "cmd /c mkdir build",
-        "Compress-Archive -Path lang, pages, LICENSE.txt, CommitReact.php -CompressionLevel Optimal -DestinationPath build\\CommitReact.zip"
+        "cmd /c xcopy lang\\* build\\CommitReact\\lang /s /i /y",
+        "cmd /c xcopy pages\\* build\\CommitReact\\pages /s /i /y",
+        "cmd /c copy /Y LICENSE.txt build\\CommitReact",
+        "cmd /c copy /Y CommitReact.php build\\CommitReact",
+        "Compress-Archive -Path build\\CommitReact -CompressionLevel Optimal -DestinationPath build\\CommitReact.zip",
+        "cmd /c rmdir /S /Q build\\CommitReact"
     ],
     "changelogFile":     "CHANGELOG.md",
     "deployCommand":     "",
@@ -13,11 +17,11 @@
     "distDocPath":       "",
     "dryRunVcRevert":    "Y",
     "emailNotification": "N",
-    "emailServer":       "smtp-relay.gmail.com",
+    "emailServer":       "",
     "emailMode":         "tls",
     "emailPort":         465,
-    "emailRecip":        "spmeesseman@gmail.com",
-    "emailSender":       "bot@spmeesseman.com",
+    "emailRecip":        "",
+    "emailSender":       "",
     "githubRelease":     "Y",
     "githubAssets": [
         "build\\CommitReact.zip"
