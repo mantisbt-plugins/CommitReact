@@ -1,0 +1,16 @@
+<?php
+
+# Custom strings for the CommitReact plugin
+
+$s_plugin_CommitReact_title = 'Commit React';
+$s_plugin_CommitReact_description = 'Add automatic update of bug fixed-in version on commit fixes';
+
+$s_plugin_CommitReact_config = 'Configuration';
+$s_plugin_CommitReact_update_config = 'Update Configuration';
+$s_plugin_CommitReact_set_fixed_in_version = 'Set fixed_in_version';
+$s_plugin_CommitReact_set_fixed_in_version_desc = 'On commit resolve (Requires Source plugin)';
+$s_plugin_CommitReact_attach_tags = 'Attach tags on commit';
+$s_plugin_CommitReact_unattach_tags = 'Unattach tags on commit';
+$s_plugin_CommitReact_resolved_attach_tags = 'Attach tags on commit resolve';
+$s_plugin_CommitReact_resolved_unattach_tags = 'Unattach tags on commit resolve';
+$s_plugin_CommitReact_tags_desc = 'List of tag names separated by ';
