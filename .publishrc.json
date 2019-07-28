@@ -33,8 +33,9 @@
     "homePage":          "",
     "interactive":       "N",
     "mantisbtPlugin":    "CommitReact.php",
-    "mantisbtRelease":   "N",
-    "mantisbtUrl":       "http://app1.spmeesseman.com/projects",
+    "mantisbtRelease":   "Y",
+    "mantisbtUrl":       "https://app1.spmeesseman.com/projects",
+    "mantisbtApiToken":  "${MANTIS_API_TOKEN}",
     "mantisbtAssets": [
         "build\\CommitReact.zip|Zip Archive"
     ],
