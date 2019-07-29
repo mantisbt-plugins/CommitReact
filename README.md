@@ -7,6 +7,8 @@
 [![authors](https://img.shields.io/badge/authors-scott%20meesseman-6F02B5.svg?logo=visual%20studio%20code)](https://github.com/spmeesseman)
 [![GitHub issues open](https://img.shields.io/github/issues-raw/spmeesseman/CommitReact.svg?maxAge=2592000&logo=github)](https://github.com/spmeesseman/CommitReact/issues)
 [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/spmeesseman/CommitReact.svg?maxAge=2592000&logo=github)](https://github.com/spmeesseman/CommitReact/issues)
+[![MantisBT version current](https://app1.spmeesseman.com/projects/plugins/ApiExtend/api/versionbadge/CommitReact/current)](https://app1.spmeesseman.com/projects)
+[![MantisBT version next](https://app1.spmeesseman.com/projects/plugins/ApiExtend/api/versionbadge/CommitReact/next)](https://app1.spmeesseman.com/projects)
 
 - [CommitReact MantisBT Plugin](#CommitReact-MantisBT-Plugin)
   - [Description](#Description)
@@ -41,7 +43,7 @@ Extract the release archive to the MantisBT installations plugins folder:
     unzip CommitReact.zip
     rm -f CommitReact.zip
 
-Ensure to use the latest released version number in the download url.
+Ensure to use the latest released version number in the download url: [![MantisBT version current](https://app1.spmeesseman.com/projects/plugins/ApiExtend/api/versionbadge/CommitReact/current)](https://app1.spmeesseman.com/projects)
 
 Install the plugin using the default installation procedure for a MantisBT plugin in `Manage -> Plugins`.
 
