@@ -50,7 +50,7 @@
     "pathPreRoot":       "",
     "postBuildCommand":  "",
     "repoType":          "git",
-    "repo":              "https://github.com/spmeesseman/CommitReact.git",
+    "repo":              "https://github.com/mantisbt-plugins/CommitReact.git",
     "skipCommit":        "N",
     "skipDeployPush":    "N",
     "testEmailRecip":    "spmeesseman@gmail.com",
