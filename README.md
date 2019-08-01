@@ -16,7 +16,7 @@
   - [Description](#Description)
   - [Installation](#Installation)
   - [Usage](#Usage)
-  - [Future Maybes](#Future-Maybes)
+  - [Todos](#Todos)
 
 ## Description
 
@@ -41,7 +41,7 @@ The version number used to set "fixed in version" in this case will be 1.2.2.
 Extract the release archive to the MantisBT installations plugins folder:
 
     cd /var/www/mantisbt/plugins
-    wget -O CommitReact.zip https://github.com/mantisbt-plugins/Releases/releases/download/v1.0.0/CommitReact.zip
+    wget -O CommitReact.zip https://github.com/mantisbt-plugins/CommitReact/releases/download/v1.0.0/CommitReact.zip
     unzip CommitReact.zip
     rm -f CommitReact.zip
 
@@ -53,6 +53,6 @@ Install the plugin using the default installation procedure for a MantisBT plugi
 
 Coming soon, under development.
 
-## Future Maybes
+## Todos
 
-- Support for tag manipulation on commit fix
+- [ ] Support for tag manipulation on commit fix
