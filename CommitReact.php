@@ -1,7 +1,7 @@
 <?php
 
-# Copyright (c) 2015 Maxim Kuzmin
-# Licensed under the Apache License
+# Copyright (c) 2019 Scott Meesseman
+# Licensed under GPL3 
 
 class CommitReactPlugin extends MantisPlugin
 {
