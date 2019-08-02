@@ -1,12 +1,12 @@
 # CommitReact MantisBT Plugin
 
-[![app-type](https://img.shields.io/badge/category-mantisbt%20plugins-blue.svg)](https://github.com/spmeesseman)
-[![app-lang](https://img.shields.io/badge/language-php-blue.svg)](https://github.com/spmeesseman)
+![app-type](https://img.shields.io/badge/category-mantisbt%20plugins-blue.svg)
+![app-lang](https://img.shields.io/badge/language-php-blue.svg)
 [![app-publisher](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-app--publisher-e10000.svg)](https://github.com/spmeesseman/app-publisher)
 [![authors](https://img.shields.io/badge/authors-scott%20meesseman-6F02B5.svg?logo=visual%20studio%20code)](https://github.com/spmeesseman)
 
-[![GitHub issues open](https://img.shields.io/github/issues-raw/spmeesseman/CommitReact.svg?maxAge=2592000&logo=github)](https://github.com/mantisbt-plugins/CommitReact/issues)
-[![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/spmeesseman/CommitReact.svg?maxAge=2592000&logo=github)](https://github.com/mantisbt-plugins/CommitReact/issues)
+[![GitHub issues open](https://img.shields.io/github/issues-raw/mantisbt-plugins/CommitReact.svg?maxAge=2592000&logo=github)](https://github.com/mantisbt-plugins/ApiExtend/issues)
+[![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/mantisbt-plugins/CommitReact.svg?maxAge=2592000&logo=github)](https://github.com/mantisbt-plugins/ApiExtend/issues)
 [![MantisBT issues open](https://app1.spmeesseman.com/projects/plugins/ApiExtend/api/issues/countbadge/CommitReact/open)](https://app1.spmeesseman.com/projects/set_project.php?project=CommitReact&make_default=no&ref=bug_report_page.php)
 [![MantisBT issues closed](https://app1.spmeesseman.com/projects/plugins/ApiExtend/api/issues/countbadge/CommitReact/closed)](https://app1.spmeesseman.com/projects/set_project.php?project=CommitReact&make_default=no&ref=bug_report_page.php)
 [![MantisBT version current](https://app1.spmeesseman.com/projects/plugins/ApiExtend/api/versionbadge/CommitReact/current)](https://app1.spmeesseman.com/projects/set_project.php?project=CommitReact&make_default=no&ref=plugin.php?page=Releases/releases)
@@ -48,6 +48,10 @@ Extract the release archive to the MantisBT installations plugins folder:
 Ensure to use the latest released version number in the download url: [![MantisBT version current](https://app1.spmeesseman.com/projects/plugins/ApiExtend/api/versionbadge/CommitReact/current)](https://app1.spmeesseman.com/projects) (version badge available via the [ApiExtend Plugin](https://github.com/mantisbt-plugins/ApiExtend))
 
 Install the plugin using the default installation procedure for a MantisBT plugin in `Manage -> Plugins`.
+
+## Issues and Feature Requests
+
+Issues for my plugins will probably at some point be hosted by my [MantisBT](https://app1.spmeesseman.com/projects/set_project.php?project=CommitReact&make_default=no&ref=bug_report_page.php) site.  Until that is up and running and configured correctly, please use [GitHub Issues](https://github.com/mantisbt-plugins/CommitReact/issues) to report any problems or requests.
 
 ## Usage
 

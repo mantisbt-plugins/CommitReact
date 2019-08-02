@@ -53,6 +53,7 @@
     "repo":              "https://github.com/mantisbt-plugins/CommitReact.git",
     "skipCommit":        "N",
     "skipDeployPush":    "N",
+    "skipVersionEdits":  "Y",
     "testEmailRecip":    "spmeesseman@gmail.com",
     "textEditor":        "notepad",
     "vcTag":             "Y",
