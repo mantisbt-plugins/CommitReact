@@ -15,6 +15,7 @@
 - [CommitReact MantisBT Plugin](#CommitReact-MantisBT-Plugin)
   - [Description](#Description)
   - [Installation](#Installation)
+  - [Issues and Feature Requests](#Issues-and-Feature-Requests)
   - [Usage](#Usage)
   - [Todos](#Todos)
 
