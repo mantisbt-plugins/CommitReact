@@ -8,6 +8,7 @@
         "cmd /c copy /Y LICENSE.txt build\\CommitReact",
         "cmd /c copy /Y CommitReact.php build\\CommitReact",
         "Compress-Archive -Path build\\CommitReact -Update -CompressionLevel Optimal -DestinationPath build\\CommitReact.zip",
+        "tar -czf build/CommitReact.tgz build\\CommitReact",
         "cmd /c rmdir /S /Q build\\CommitReact"
     ],
     "changelogFile":     "CHANGELOG.md",
@@ -24,6 +25,7 @@
     "emailSender":       "",
     "githubRelease":     "Y",
     "githubAssets": [
+        "build\\CommitReact.tgz",
         "build\\CommitReact.zip"
     ],
     "githubUser":        "mantisbt-plugins",
@@ -37,6 +39,7 @@
     "mantisbtUrl":       "https://app1.spmeesseman.com/projects",
     "mantisbtApiToken":  "${MANTIS_API_TOKEN}",
     "mantisbtAssets": [
+        "build\\CommitReact.tgz|GZip Tarball",
         "build\\CommitReact.zip|Zip Archive"
     ],
     "npmPackDist":       "N",
