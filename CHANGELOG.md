@@ -1,5 +1,19 @@
 # COMMITREACT CHANGE LOG
 
+## Version 1.0.3 (August 3rd, 2019)
+
+### Documentation
+
+- **README:** update toc
+
+### Features
+
+- show the success redirect when saving config settings
+
+### Bug Fixes
+
+- form security cookie is not set properly
+
 ## Version 1.0.2 (July 29th, 2019)
 
 ### Build System
