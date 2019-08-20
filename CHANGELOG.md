@@ -1,5 +1,15 @@
 # COMMITREACT CHANGE LOG
 
+## Version 1.1.0 (August 20th, 2019)
+
+### Documentation
+
+- **readme:** udpate issues submit section
+
+### Features
+
+- add support for adding and removing tags on commit/commit-fixed
+
 ## Version 1.0.5 (August 8th, 2019)
 
 ### Bug Fixes
