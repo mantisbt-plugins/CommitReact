@@ -1,5 +1,15 @@
 # COMMITREACT CHANGE LOG
 
+## Version 1.1.1 (August 20th, 2019)
+
+### Bug Fixes
+
+- target version is being set but is throwing exception afterwards before retruning from event
+
+	This is due to global user id not being set correctly, as source-integration plugin unsets the userid before firing the commit events.
+
+- automatic tagging added in v1.1 is not working correctly if target version is not set
+
 ## Version 1.1.0 (August 20th, 2019)
 
 ### Documentation
