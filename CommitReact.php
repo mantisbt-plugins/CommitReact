@@ -3,7 +3,7 @@
 # Copyright ( c ) 2019 Scott Meesseman
 # Licensed under GPL3 
 
-$g_cache_commitreact_current_user_id = NO_USER;
+$g_commitreact_prev_user_id = NO_USER;
 
 class CommitReactPlugin extends MantisPlugin
 {
@@ -164,18 +164,18 @@ class CommitReactPlugin extends MantisPlugin
 
     private function cr_reset_user()
     {
-        global $g_cache_commitreact_current_user_id;
+        global $g_commitreact_prev_user_id;
         global $g_cache_current_user_id;
-        $g_cache_current_user_id = $g_cache_commitreact_current_user_id;
+        $g_cache_current_user_id = $g_commitreact_prev_user_id;
         log_event( LOG_PLUGIN, "CommitReact: reset user id - %d", $g_cache_current_user_id );
     }
 
 
     private function cr_set_user($p_bug_id, $p_changeset)
     {
-        global $g_cache_commitreact_current_user_id;
+        global $g_commitreact_prev_user_id;
         global $g_cache_current_user_id;
-        $g_cache_commitreact_current_user_id = $g_cache_current_user_id;
+        $g_commitreact_prev_user_id = $g_cache_current_user_id;
 
         $t_handle_bug_threshold = config_get( 'handle_bug_threshold' );
     
@@ -207,8 +207,8 @@ class CommitReactPlugin extends MantisPlugin
 
 		if ( !is_null( $t_user_id ) ) {
 			$g_cache_current_user_id = $t_user_id;
-		} else if ( !is_null( $g_cache_commitreact_current_user_id ) ) {
-			$g_cache_current_user_id = $g_cache_commitreact_current_user_id;
+		} else if ( !is_null( $g_commitreact_prev_user_id ) ) {
+			$g_cache_current_user_id = $g_commitreact_prev_user_id;
 		} else {
 			$g_cache_current_user_id = 0;
         }
@@ -228,6 +228,51 @@ class CommitReactPlugin extends MantisPlugin
     }
 
 
+    private function cr_get_tag_id( $p_tage_name, $p_user_id )
+    {
+        $t_tag_id = 0;
+        $t_tag = tag_get_by_name( $p_tage_name );
+        if ( $t_tag === false ) {
+            if ( access_has_global_level( config_get( 'tag_create_threshold' ), $p_user_id ) ) {
+                $t_tag_id = tag_create( $p_tage_name, $p_user_id );
+            }
+            else {
+                log_event( LOG_PLUGIN, "CommitReact: Access level cannot create tag", $p_tage_name );
+            }
+        }
+        else {
+            $t_tag_id = $t_tag['id'];
+        }
+        return $t_tag_id;
+    }
+
+
+    private function handle_tag( $p_type, $p_tag_id, $p_user_id, $p_bug_id )
+    {
+        if ($p_tag_id > 0) 
+        {
+            if ( $p_type == 'attach' ) 
+            {
+                if ( !tag_bug_is_attached( $p_tag_id, $p_bug_id ) )
+                {
+                    if ( access_has_global_level( config_get('tag_attach_threshold'), $p_user_id ) ) {
+                        tag_bug_attach( $p_tag_id, $p_bug_id, $p_user_id );
+                    }
+                }
+            }
+            else if ( $p_type == 'detach' ) 
+            {
+                if ( tag_bug_is_attached( $p_tag_id, $p_bug_id ) ) 
+                {
+                    if ( access_has_global_level( config_get('tag_detach_threshold'), $p_user_id ) ) {
+                        tag_bug_detach( $p_tag_id, $p_bug_id, true, $p_user_id );
+                    }
+                }
+            }
+        }
+    }
+
+
     private function handle_tag_type( $p_type, $p_user_id, $p_bug_id, $p_commit_msg, $p_tags )
     {
         if ( !is_blank( $p_tags ) )
@@ -236,6 +281,10 @@ class CommitReactPlugin extends MantisPlugin
 
             $t_tag_strings = explode( config_get( 'tag_separator' ), $p_tags );
             
+            #
+            # fixes:bug,review pending|<8,manager checked|8,admin checked|16
+            #
+
             foreach ( $t_tag_strings as $t_tag_string )
             {   
                 log_event( LOG_PLUGIN, "CommitReact: Process tag %s", $t_tag_string );
@@ -244,32 +293,59 @@ class CommitReactPlugin extends MantisPlugin
 
                 if ( count( $t_tag_string_parts ) === 1 ) 
                 {
-                    $t_tag = tag_get_by_name( $t_tag_string_parts[0] );
-                    if ( $t_tag === false ) {
-                        if ( access_has_global_level( config_get('tag_create_threshold'), $p_user_id ) ) {
-                            $t_tag_id = tag_create($t_tag_string_parts[0], $p_user_id);
-                        }
-                        else {
-                            log_event( LOG_PLUGIN, "CommitReact: Access level cannot create tag", $t_tag_string );
-                            continue;
-                        }
+                    $t_tag_string_parts_2 = explode( '|', $t_tag_string );
+                    if ( count( $t_tag_string_parts_2 ) === 1 ) 
+                    {
+                        $t_tag_id = $this->cr_get_tag_id( $t_tag_string_parts_2[0], $p_user_id );
+                        $this->handle_tag( $p_type, $t_tag_id, $p_user_id, $p_bug_id );
                     }
-                    else {
-                        $t_tag_id = $t_tag['id'];
-                    }
-                    
-                    if ($p_type == 'attach') {
-                        if ( !tag_bug_is_attached( $t_tag_id, $p_bug_id ) ) {
-                            if ( access_has_global_level( config_get('tag_attach_threshold'), $p_user_id ) ) {
-                                tag_bug_attach( $t_tag_id, $p_bug_id, $p_user_id );
+                    else if ( count( $t_tag_string_parts_2 ) === 2 ) 
+                    {
+                        try
+                        {
+                            if ( substr( $t_tag_string_parts_2[1], 0, 2 ) == "<=" )
+                            {
+                                $t_access_level = substr( $t_tag_string_parts_2[1], 2 );
+                                if ( user_get_access_level( $p_user_id ) <= (int)$t_access_level  ) {
+                                    $t_tag_id = $this->cr_get_tag_id( $t_tag_string_parts_2[0], $p_user_id );
+                                    $this->handle_tag( $p_type, $t_tag_id, $p_user_id, $p_bug_id );
+                                }
+                            }
+                            else if ( substr( $t_tag_string_parts_2[1], 0, 2 ) == ">=" )
+                            {
+                                $t_access_level = substr( $t_tag_string_parts_2[1], 2 );
+                                if ( user_get_access_level( $p_user_id ) >= (int)$t_access_level  ) {
+                                    $t_tag_id = $this->cr_get_tag_id( $t_tag_string_parts_2[0], $p_user_id );
+                                    $this->handle_tag( $p_type, $t_tag_id, $p_user_id, $p_bug_id );
+                                }
+                            }
+                            else if ( substr( $t_tag_string_parts_2[1], 0, 1 ) == "<" )
+                            {
+                                $t_access_level = substr( $t_tag_string_parts_2[1], 1 );
+                                if ( user_get_access_level( $p_user_id ) < (int)$t_access_level  ) {
+                                    $t_tag_id = $this->cr_get_tag_id( $t_tag_string_parts_2[0], $p_user_id );
+                                    $this->handle_tag( $p_type, $t_tag_id, $p_user_id, $p_bug_id );
+                                }
+                            }
+                            else if ( substr( $t_tag_string_parts_2[1], 0, 1 ) == ">" )
+                            {
+                                $t_access_level = substr( $t_tag_string_parts_2[1], 1 );
+                                if ( user_get_access_level( $p_user_id ) > (int)$t_access_level  ) {
+                                    $t_tag_id = $this->cr_get_tag_id( $t_tag_string_parts_2[0], $p_user_id );
+                                    $this->handle_tag( $p_type, $t_tag_id, $p_user_id, $p_bug_id );
+                                }
+                            }
+                            else
+                            {
+                                $t_access_level = $t_tag_string_parts_2[1];
+                                if ( user_get_access_level( $p_user_id ) == (int)$t_access_level ) {
+                                    $t_tag_id = $this->cr_get_tag_id( $t_tag_string_parts_2[0], $p_user_id );
+                                    $this->handle_tag( $p_type, $t_tag_id, $p_user_id, $p_bug_id );
+                                }
                             }
                         }
-                    }
-                    else if ($p_type == 'detach') {
-                        if ( tag_bug_is_attached( $t_tag_id, $p_bug_id ) ) {
-                            if ( access_has_global_level( config_get('tag_detach_threshold'), $p_user_id ) ) {
-                                tag_bug_detach( $t_tag_id, $p_bug_id, true, $p_user_id );
-                            }
+                        catch (Exception $e) {
+                            log_event( LOG_PLUGIN, "CommitReact: Exception handle_tag_type - %s", $e->getMessage() );
                         }
                     }
                 }
@@ -277,33 +353,8 @@ class CommitReactPlugin extends MantisPlugin
                 {
                     if ( !is_blank( $t_tag_string_parts[0] ) && strtolower( trim( $t_tag_string_parts[0] ) ) === $this->get_commit_subject( $p_commit_msg ) )
                     {
-                        $t_tag = tag_get_by_name( $t_tag_string_parts[1] );
-                        if ( $t_tag === false ) {
-                            if ( access_has_global_level( config_get('tag_create_threshold'), $p_user_id ) ) {
-                                $t_tag_id = tag_create($t_tag_string_parts[0], $p_user_id );
-                            }
-                            else {
-                                log_event( LOG_PLUGIN, "CommitReact: Access level cannot create tag", $t_tag_string );
-                                continue;
-                            }
-                        }
-                        else {
-                            $t_tag_id = $t_tag['id'];
-                        }
-                        if ($p_type == 'attach') {
-                            if ( !tag_bug_is_attached( $t_tag_id, $p_bug_id ) ) {
-                                if ( access_has_global_level( config_get('tag_attach_threshold'), $p_user_id ) ) {
-                                    tag_bug_attach( $t_tag_id, $p_bug_id, $p_user_id );
-                                }
-                            }
-                        }
-                        else if ($p_type == 'detach') {
-                            if ( tag_bug_is_attached( $t_tag_id, $p_bug_id ) ) {
-                                if ( access_has_global_level( config_get('tag_detach_threshold'), $p_user_id ) ) {
-                                    tag_bug_detach( $t_tag_id, $p_bug_id, true, $p_user_id );
-                                }
-                            }
-                        }
+                        $t_tag_id = $this->cr_get_tag_id( $t_tag_string_parts[1], $p_user_id );
+                        $this->handle_tag( $p_type, $t_tag_id, $p_user_id, $p_bug_id );
                     }
                 }
             }
