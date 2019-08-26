@@ -1,5 +1,11 @@
 # COMMITREACT CHANGE LOG
 
+## Version 1.2.0 (August 25th, 2019)
+
+### Features
+
+- add support to apply tagging/untagging based on access level of committer
+
 ## Version 1.1.1 (August 20th, 2019)
 
 ### Bug Fixes
